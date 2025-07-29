@@ -18,8 +18,12 @@
     "nativewind": "^4.1.23",
     "react": "19.0.0",
     "react-native": "0.79.5",
+    "react-native-elements": "^3.4.3",
+    "react-native-ratings": "^8.1.0",
     "react-native-safe-area-context": "^5.5.2",
-    "react-native-screens": "^4.13.1"
+    "react-native-safe-area-view": "^1.1.1",
+    "react-native-screens": "^4.13.1",
+    "react-native-maps": "1.20.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

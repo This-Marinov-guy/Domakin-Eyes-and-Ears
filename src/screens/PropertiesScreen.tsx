@@ -8,7 +8,9 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, Input } from '../components';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { SearchBar } from 'react-native-elements';
+import { Button, Card } from '../components';
 import { colors, typography, spacing } from '../theme';
 
 const { width } = Dimensions.get('window');
@@ -115,15 +117,15 @@ export const PropertiesScreen: React.FC = () => {
         <Text style={styles.propertyLocation}>{item.location}</Text>
         <View style={styles.propertyFeatures}>
           <View style={styles.featureItem}>
-            <Text style={styles.featureIcon}>🛏️</Text>
+            <Ionicons name="bed-outline" size={16} color={colors.neutral.textPrimary} />
             <Text style={styles.featureText}>{item.beds}</Text>
           </View>
           <View style={styles.featureItem}>
-            <Text style={styles.featureIcon}>🚿</Text>
+            <Ionicons name="water-outline" size={16} color={colors.neutral.textPrimary} />
             <Text style={styles.featureText}>{item.baths}</Text>
           </View>
           <View style={styles.featureItem}>
-            <Text style={styles.featureIcon}>📐</Text>
+            <MaterialIcons name="square-foot" size={16} color={colors.neutral.textPrimary} />
             <Text style={styles.featureText}>{item.sqft} sqft</Text>
           </View>
         </View>
@@ -136,7 +138,7 @@ export const PropertiesScreen: React.FC = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Properties</Text>
         <Text style={styles.headerSubtitle}>
@@ -147,11 +149,17 @@ export const PropertiesScreen: React.FC = () => {
       {/* Search and Filters */}
       <View style={styles.searchSection}>
         <Card variant="elevated" style={styles.searchCard}>
-          <Input
+          <SearchBar
             placeholder="Search properties or locations..."
-            value={searchQuery}
             onChangeText={setSearchQuery}
-            style={styles.searchInput}
+            value={searchQuery}
+            containerStyle={styles.searchBarContainer}
+            inputContainerStyle={styles.searchBarInputContainer}
+            inputStyle={styles.searchBarInput}
+            searchIcon={{ color: colors.neutral.mediumGray }}
+            clearIcon={{ color: colors.neutral.mediumGray }}
+            placeholderTextColor={colors.neutral.mediumGray}
+            platform="default"
           />
           
           <View style={styles.filtersContainer}>
@@ -186,6 +194,9 @@ export const PropertiesScreen: React.FC = () => {
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         ListEmptyComponent={() => (
           <Card variant="standard" style={styles.emptyState}>
+            <View style={styles.emptyStateIcon}>
+              <Ionicons name="search-outline" size={48} color={colors.neutral.mediumGray} />
+            </View>
             <Text style={styles.emptyStateTitle}>No Properties Found</Text>
             <Text style={styles.emptyStateText}>
               Try adjusting your search criteria or filters
@@ -201,7 +212,7 @@ export const PropertiesScreen: React.FC = () => {
           </Card>
         )}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -209,10 +220,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background.light,
+    paddingTop: 0,
   },
   header: {
     paddingHorizontal: spacing[6],
-    paddingVertical: spacing[6],
+    paddingTop: spacing[16],
+    paddingBottom: spacing[6],
     backgroundColor: colors.neutral.white,
     borderBottomWidth: 1,
     borderBottomColor: colors.neutral.borderGray,
@@ -234,8 +247,23 @@ const styles = StyleSheet.create({
   searchCard: {
     padding: spacing[6],
   },
-  searchInput: {
+  searchBarContainer: {
+    backgroundColor: 'transparent',
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    paddingHorizontal: 0,
     marginBottom: spacing[4],
+  },
+  searchBarInputContainer: {
+    backgroundColor: colors.neutral.white,
+    borderRadius: spacing[3],
+    borderWidth: 1,
+    borderColor: colors.neutral.borderGray,
+    borderBottomWidth: 1,
+  },
+  searchBarInput: {
+    fontSize: typography.fontSize.base,
+    color: colors.neutral.textDark,
   },
   filtersContainer: {
     gap: spacing[3],
@@ -351,6 +379,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing[10],
     marginTop: spacing[8],
+  },
+  emptyStateIcon: {
+    marginBottom: spacing[4],
   },
   emptyStateTitle: {
     fontSize: typography.fontSize['2xl'],

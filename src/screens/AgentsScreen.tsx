@@ -8,6 +8,8 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Avatar, Rating, Badge } from 'react-native-elements';
 import { Button, Card } from '../components';
 import { colors, typography, spacing } from '../theme';
 
@@ -25,6 +27,7 @@ export const AgentsScreen: React.FC = () => {
       sales: '150+ properties sold',
       location: 'Beverly Hills, CA',
       description: 'Specializing in luxury properties with a focus on personalized service and market expertise.',
+      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b632?w=150&h=150&fit=crop&crop=face',
     },
     {
       id: 2,
@@ -36,6 +39,7 @@ export const AgentsScreen: React.FC = () => {
       sales: '200+ properties sold',
       location: 'Manhattan, NY',
       description: 'Expert in commercial real estate and investment properties. Helping clients build wealth through real estate.',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     },
     {
       id: 3,
@@ -47,6 +51,7 @@ export const AgentsScreen: React.FC = () => {
       sales: '120+ properties sold',
       location: 'Austin, TX',
       description: 'Passionate about helping first-time buyers navigate the real estate market with confidence.',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
     },
     {
       id: 4,
@@ -58,6 +63,7 @@ export const AgentsScreen: React.FC = () => {
       sales: '300+ properties sold',
       location: 'Miami, FL',
       description: 'Premier agent for luxury and waterfront properties with an unmatched track record.',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
     },
   ];
 
@@ -85,17 +91,34 @@ export const AgentsScreen: React.FC = () => {
   const renderAgent = ({ item }: { item: typeof agents[0] }) => (
     <Card variant="elevated" style={styles.agentCard}>
       <View style={styles.agentHeader}>
-        <View style={styles.agentAvatar}>
-          <Text style={styles.avatarText}>{item.name.split(' ').map(n => n[0]).join('')}</Text>
-        </View>
+        <Avatar
+          size="medium"
+          rounded
+          source={{ uri: item.avatar }}
+          title={item.name.split(' ').map(n => n[0]).join('')}
+          containerStyle={styles.avatarContainer}
+        />
         <View style={styles.agentInfo}>
           <Text style={styles.agentName}>{item.name}</Text>
           <Text style={styles.agentTitle}>{item.title}</Text>
           <View style={styles.agentRating}>
-            <Text style={styles.ratingStars}>⭐⭐⭐⭐⭐</Text>
+            <Rating
+              imageSize={16}
+              readonly
+              startingValue={item.rating}
+              style={styles.rating}
+            />
             <Text style={styles.ratingText}>{item.rating}</Text>
           </View>
         </View>
+        {item.rating === 5.0 && (
+          <Badge
+            value="Top Rated"
+            status="success"
+            containerStyle={styles.badgeContainer}
+            textStyle={styles.badgeText}
+          />
+        )}
       </View>
 
       <View style={styles.agentStats}>
@@ -114,7 +137,10 @@ export const AgentsScreen: React.FC = () => {
       </View>
 
       <Text style={styles.agentDescription}>{item.description}</Text>
-      <Text style={styles.agentLocation}>📍 {item.location}</Text>
+      <View style={styles.agentLocationContainer}>
+        <Ionicons name="location-outline" size={16} color={colors.neutral.textPrimary} />
+        <Text style={styles.agentLocation}>{item.location}</Text>
+      </View>
 
       <View style={styles.agentActions}>
         <Button title="Contact Agent" variant="primary" style={styles.actionButton} />
@@ -125,6 +151,9 @@ export const AgentsScreen: React.FC = () => {
 
   const renderTestimonial = ({ item }: { item: typeof testimonials[0] }) => (
     <Card variant="elevated" style={styles.testimonialCard}>
+      <View style={styles.testimonialQuote}>
+        <Ionicons name="chatbubble-outline" size={24} color={colors.primary.blue} />
+      </View>
       <Text style={styles.testimonialText}>"{item.text}"</Text>
       <View style={styles.testimonialAuthor}>
         <Text style={styles.authorName}>{item.author}</Text>
@@ -133,9 +162,11 @@ export const AgentsScreen: React.FC = () => {
     </Card>
   );
 
+  const featuredAgent = agents.find(agent => agent.rating === 5.0) || agents[0];
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Our Agents</Text>
@@ -149,27 +180,40 @@ export const AgentsScreen: React.FC = () => {
           <Text style={styles.sectionTitle}>Featured Agent</Text>
           <Card variant="elevated" style={styles.featuredAgent}>
             <View style={styles.featuredBadge}>
+              <Ionicons name="trophy" size={16} color={colors.neutral.white} />
               <Text style={styles.badgeText}>Top Performer</Text>
             </View>
             <View style={styles.featuredContent}>
-              <View style={styles.featuredAvatar}>
-                <Text style={styles.featuredAvatarText}>DT</Text>
-              </View>
-              <Text style={styles.featuredName}>David Thompson</Text>
-              <Text style={styles.featuredTitle}>Luxury Home Consultant</Text>
+              <Avatar
+                size="large"
+                rounded
+                source={{ uri: featuredAgent.avatar }}
+                title={featuredAgent.name.split(' ').map(n => n[0]).join('')}
+                containerStyle={styles.featuredAvatarContainer}
+              />
+              <Text style={styles.featuredName}>{featuredAgent.name}</Text>
+              <Text style={styles.featuredTitle}>{featuredAgent.title}</Text>
               <Text style={styles.featuredDescription}>
                 Premier agent for luxury and waterfront properties with 15 years of experience and 300+ properties sold.
               </Text>
               <View style={styles.featuredStats}>
                 <View style={styles.featuredStat}>
-                  <Text style={styles.featuredStatValue}>5.0</Text>
+                  <Rating
+                    imageSize={20}
+                    readonly
+                    startingValue={featuredAgent.rating}
+                    tintColor={colors.primary.blue}
+                  />
+                  <Text style={styles.featuredStatValue}>{featuredAgent.rating}</Text>
                   <Text style={styles.featuredStatLabel}>Rating</Text>
                 </View>
                 <View style={styles.featuredStat}>
+                  <Ionicons name="home" size={20} color={colors.neutral.white} />
                   <Text style={styles.featuredStatValue}>300+</Text>
                   <Text style={styles.featuredStatLabel}>Sales</Text>
                 </View>
                 <View style={styles.featuredStat}>
+                  <Ionicons name="time" size={20} color={colors.neutral.white} />
                   <Text style={styles.featuredStatValue}>15</Text>
                   <Text style={styles.featuredStatLabel}>Years</Text>
                 </View>
@@ -207,6 +251,9 @@ export const AgentsScreen: React.FC = () => {
         {/* CTA Section */}
         <View style={styles.ctaSection}>
           <Card variant="standard" style={styles.ctaCard}>
+            <View style={styles.ctaIcon}>
+              <Ionicons name="people" size={32} color={colors.primary.orange} />
+            </View>
             <Text style={styles.ctaTitle}>Need Help Finding an Agent?</Text>
             <Text style={styles.ctaDescription}>
               Our team will match you with the perfect agent based on your needs and location.
@@ -215,7 +262,7 @@ export const AgentsScreen: React.FC = () => {
           </Card>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -223,10 +270,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background.light,
+    paddingTop: 0,
   },
   header: {
     paddingHorizontal: spacing[6],
-    paddingVertical: spacing[8],
+    paddingTop: spacing[16],
+    paddingBottom: spacing[8],
     backgroundColor: colors.neutral.white,
     alignItems: 'center',
   },
@@ -257,6 +306,9 @@ const styles = StyleSheet.create({
     borderRadius: spacing[4],
     paddingVertical: spacing[1],
     paddingHorizontal: spacing[3],
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[1],
   },
   badgeText: {
     color: colors.neutral.white,
@@ -268,19 +320,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing[8],
   },
-  featuredAvatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: colors.neutral.white,
-    justifyContent: 'center',
-    alignItems: 'center',
+  featuredAvatarContainer: {
     marginBottom: spacing[4],
-  },
-  featuredAvatarText: {
-    fontSize: typography.fontSize['2xl'],
-    fontWeight: typography.fontWeight.bold,
-    color: colors.primary.blue,
+    borderWidth: 3,
+    borderColor: colors.neutral.white,
   },
   featuredName: {
     fontSize: typography.fontSize['3xl'],
@@ -308,6 +351,7 @@ const styles = StyleSheet.create({
   },
   featuredStat: {
     alignItems: 'center',
+    gap: spacing[1],
   },
   featuredStatValue: {
     fontSize: typography.fontSize['2xl'],
@@ -334,20 +378,10 @@ const styles = StyleSheet.create({
   agentHeader: {
     flexDirection: 'row',
     marginBottom: spacing[4],
+    alignItems: 'flex-start',
   },
-  agentAvatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: colors.primary.orange,
-    justifyContent: 'center',
-    alignItems: 'center',
+  avatarContainer: {
     marginRight: spacing[4],
-  },
-  avatarText: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.bold,
-    color: colors.neutral.white,
   },
   agentInfo: {
     flex: 1,
@@ -360,20 +394,25 @@ const styles = StyleSheet.create({
   agentTitle: {
     fontSize: typography.fontSize.base,
     color: colors.neutral.textPrimary,
-    marginBottom: spacing[1],
+    marginBottom: spacing[2],
   },
   agentRating: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing[2],
   },
-  ratingStars: {
-    fontSize: typography.fontSize.sm,
+  rating: {
+    alignSelf: 'flex-start',
   },
   ratingText: {
     fontSize: typography.fontSize.sm,
     fontWeight: typography.fontWeight.medium,
     color: colors.neutral.textDark,
+  },
+  badgeContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
   },
   agentStats: {
     flexDirection: 'row',
@@ -405,10 +444,15 @@ const styles = StyleSheet.create({
     lineHeight: typography.fontSize.base * typography.lineHeight.relaxed,
     marginBottom: spacing[3],
   },
+  agentLocationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[1],
+    marginBottom: spacing[4],
+  },
   agentLocation: {
     fontSize: typography.fontSize.sm,
     color: colors.neutral.textPrimary,
-    marginBottom: spacing[4],
   },
   agentActions: {
     flexDirection: 'row',
@@ -427,6 +471,10 @@ const styles = StyleSheet.create({
     width: width * 0.8,
     marginRight: spacing[4],
     padding: spacing[6],
+  },
+  testimonialQuote: {
+    alignSelf: 'flex-start',
+    marginBottom: spacing[3],
   },
   testimonialText: {
     fontSize: typography.fontSize.lg,
@@ -456,6 +504,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background.pinkTwo,
     alignItems: 'center',
     padding: spacing[8],
+  },
+  ctaIcon: {
+    marginBottom: spacing[4],
   },
   ctaTitle: {
     fontSize: typography.fontSize['2xl'],

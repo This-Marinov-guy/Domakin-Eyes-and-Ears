@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Button as RNEButton } from 'react-native-elements';
 import { colors, buttonStyles, typography } from '../theme';
 
 interface ButtonProps {
@@ -10,6 +11,8 @@ interface ButtonProps {
   onPress?: () => void;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  loading?: boolean;
+  icon?: React.ReactElement;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -20,6 +23,8 @@ export const Button: React.FC<ButtonProps> = ({
   onPress,
   style,
   textStyle,
+  loading = false,
+  icon,
 }) => {
   const getButtonStyle = () => {
     const baseStyle = buttonStyles[variant];
@@ -73,14 +78,20 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <TouchableOpacity
-      style={getButtonStyle()}
+    <RNEButton
+      title={title}
       onPress={onPress}
       disabled={disabled}
-      activeOpacity={0.8}
-    >
-      <Text style={[styles.baseText, getTextStyle()]}>{title}</Text>
-    </TouchableOpacity>
+      loading={loading}
+      icon={icon}
+      buttonStyle={getButtonStyle()}
+      titleStyle={[styles.baseText, getTextStyle()]}
+      disabledStyle={styles.disabled}
+      disabledTitleStyle={styles.disabledText}
+      loadingProps={{
+        color: variant === 'primary' ? colors.neutral.white : colors.primary.orange,
+      }}
+    />
   );
 };
 

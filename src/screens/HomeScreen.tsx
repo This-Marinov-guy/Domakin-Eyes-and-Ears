@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Button, Card } from '../components';
 import { colors, typography, spacing, shadows } from '../theme';
 
@@ -44,15 +45,58 @@ export const HomeScreen: React.FC = () => {
     },
   ];
 
+  const services = [
+    {
+      id: 1,
+      title: 'Buy Property',
+      description: 'Find your perfect home with our expert guidance',
+      icon: 'home' as keyof typeof Ionicons.glyphMap,
+      iconLibrary: 'Ionicons',
+    },
+    {
+      id: 2,
+      title: 'Rent Property',
+      description: 'Discover rental properties that fit your lifestyle',
+      icon: 'key' as keyof typeof Ionicons.glyphMap,
+      iconLibrary: 'Ionicons',
+    },
+    {
+      id: 3,
+      title: 'Sell Property',
+      description: 'Get the best value for your property investment',
+      icon: 'cash' as keyof typeof Ionicons.glyphMap,
+      iconLibrary: 'Ionicons',
+    },
+    {
+      id: 4,
+      title: 'Market Analysis',
+      description: 'Expert insights into real estate market trends',
+      icon: 'analytics' as keyof typeof Ionicons.glyphMap,
+      iconLibrary: 'Ionicons',
+    },
+  ];
+
+  const renderServiceIcon = (service: typeof services[0]) => {
+    return (
+      <Ionicons 
+        name={service.icon} 
+        size={28} 
+        color={colors.primary.blue}
+      />
+    );
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
         {/* Hero Section */}
         <View style={styles.heroSection}>
           <View style={styles.heroContent}>
-            <Text style={styles.heroTitle}>Find Your Dream Home</Text>
+            <Text style={styles.heroTitle}>
+              Viewings made easy
+            </Text>
             <Text style={styles.heroSubtitle}>
-              Discover the perfect property with our extensive listings
+              Make a viewing - earn some money
             </Text>
             <View style={styles.heroButtons}>
               <Button
@@ -77,9 +121,24 @@ export const HomeScreen: React.FC = () => {
             <Text style={styles.sectionTitle}>Quick Search</Text>
             <View style={styles.searchFilters}>
               <View style={styles.filterRow}>
-                <Button title="Buy" variant="primary" size="sm" style={styles.filterButton} />
-                <Button title="Rent" variant="outline" size="sm" style={styles.filterButton} />
-                <Button title="Sell" variant="outline" size="sm" style={styles.filterButton} />
+                <Button
+                  title="Buy"
+                  variant="primary"
+                  size="sm"
+                  style={styles.filterButton}
+                />
+                <Button
+                  title="Rent"
+                  variant="outline"
+                  size="sm"
+                  style={styles.filterButton}
+                />
+                <Button
+                  title="Sell"
+                  variant="outline"
+                  size="sm"
+                  style={styles.filterButton}
+                />
               </View>
               <Button title="Search Properties" variant="primary" />
             </View>
@@ -99,7 +158,11 @@ export const HomeScreen: React.FC = () => {
             style={styles.propertiesScroll}
           >
             {featuredProperties.map((property) => (
-              <Card key={property.id} variant="property" style={styles.propertyCard}>
+              <Card
+                key={property.id}
+                variant="property"
+                style={styles.propertyCard}
+              >
                 <View style={styles.propertyImage}>
                   <View style={styles.propertyBadge}>
                     <Text style={styles.badgeText}>Featured</Text>
@@ -108,11 +171,40 @@ export const HomeScreen: React.FC = () => {
                 <View style={styles.propertyContent}>
                   <Text style={styles.propertyPrice}>{property.price}</Text>
                   <Text style={styles.propertyTitle}>{property.title}</Text>
-                  <Text style={styles.propertyLocation}>{property.location}</Text>
+                  <Text style={styles.propertyLocation}>
+                    {property.location}
+                  </Text>
                   <View style={styles.propertyFeatures}>
-                    <Text style={styles.featureText}>{property.beds} bed</Text>
-                    <Text style={styles.featureText}>{property.baths} bath</Text>
-                    <Text style={styles.featureText}>{property.sqft} sqft</Text>
+                    <View style={styles.featureItem}>
+                      <Ionicons
+                        name="bed-outline"
+                        size={16}
+                        color={colors.neutral.textPrimary}
+                      />
+                      <Text style={styles.featureText}>
+                        {property.beds} bed
+                      </Text>
+                    </View>
+                    <View style={styles.featureItem}>
+                      <Ionicons
+                        name="water-outline"
+                        size={16}
+                        color={colors.neutral.textPrimary}
+                      />
+                      <Text style={styles.featureText}>
+                        {property.baths} bath
+                      </Text>
+                    </View>
+                    <View style={styles.featureItem}>
+                      <MaterialIcons
+                        name="square-foot"
+                        size={16}
+                        color={colors.neutral.textPrimary}
+                      />
+                      <Text style={styles.featureText}>
+                        {property.sqft} sqft
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </Card>
@@ -124,45 +216,21 @@ export const HomeScreen: React.FC = () => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Our Services</Text>
           <View style={styles.servicesGrid}>
-            <Card variant="elevated" style={styles.serviceCard}>
-              <View style={styles.serviceIcon}>
-                <Text style={styles.serviceIconText}>🏠</Text>
-              </View>
-              <Text style={styles.serviceTitle}>Buy Property</Text>
-              <Text style={styles.serviceDescription}>
-                Find your perfect home with our expert guidance
-              </Text>
-            </Card>
-
-            <Card variant="elevated" style={styles.serviceCard}>
-              <View style={styles.serviceIcon}>
-                <Text style={styles.serviceIconText}>🔑</Text>
-              </View>
-              <Text style={styles.serviceTitle}>Rent Property</Text>
-              <Text style={styles.serviceDescription}>
-                Discover rental properties that fit your lifestyle
-              </Text>
-            </Card>
-
-            <Card variant="elevated" style={styles.serviceCard}>
-              <View style={styles.serviceIcon}>
-                <Text style={styles.serviceIconText}>💰</Text>
-              </View>
-              <Text style={styles.serviceTitle}>Sell Property</Text>
-              <Text style={styles.serviceDescription}>
-                Get the best value for your property investment
-              </Text>
-            </Card>
-
-            <Card variant="elevated" style={styles.serviceCard}>
-              <View style={styles.serviceIcon}>
-                <Text style={styles.serviceIconText}>📊</Text>
-              </View>
-              <Text style={styles.serviceTitle}>Market Analysis</Text>
-              <Text style={styles.serviceDescription}>
-                Expert insights into real estate market trends
-              </Text>
-            </Card>
+            {services.map((service) => (
+              <Card
+                key={service.id}
+                variant="elevated"
+                style={styles.serviceCard}
+              >
+                <View style={styles.serviceIcon}>
+                  {renderServiceIcon(service)}
+                </View>
+                <Text style={styles.serviceTitle}>{service.title}</Text>
+                <Text style={styles.serviceDescription}>
+                  {service.description}
+                </Text>
+              </Card>
+            ))}
           </View>
         </View>
 
@@ -171,7 +239,8 @@ export const HomeScreen: React.FC = () => {
           <Card variant="standard" style={styles.ctaCard}>
             <Text style={styles.ctaTitle}>Ready to Find Your Dream Home?</Text>
             <Text style={styles.ctaDescription}>
-              Join thousands of satisfied customers who found their perfect property with us
+              Join thousands of satisfied customers who found their perfect
+              property with us
             </Text>
             <Button
               title="Get Started Today"
@@ -182,7 +251,7 @@ export const HomeScreen: React.FC = () => {
           </Card>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -195,32 +264,32 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background.pink,
     paddingVertical: spacing[16],
     paddingHorizontal: spacing[6],
-    alignItems: 'center',
+    alignItems: "center",
   },
   heroContent: {
-    alignItems: 'center',
+    alignItems: "center",
     maxWidth: 400,
   },
   heroTitle: {
-    fontSize: typography.fontSize['6xl'],
+    fontSize: typography.fontSize["6xl"],
     fontWeight: typography.fontWeight.bold,
-    color: colors.neutral.textDark,
-    textAlign: 'center',
+    color: colors.primary.blue,
+    textAlign: "center",
     marginBottom: spacing[4],
-    lineHeight: typography.fontSize['6xl'] * typography.lineHeight.tight,
+    lineHeight: typography.fontSize["6xl"] * typography.lineHeight.tight,
   },
   heroSubtitle: {
     fontSize: typography.fontSize.lg,
     color: colors.neutral.textPrimary,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: spacing[8],
     lineHeight: typography.fontSize.lg * typography.lineHeight.relaxed,
   },
   heroButtons: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: spacing[4],
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+    flexWrap: "wrap",
+    justifyContent: "center",
   },
   heroButton: {
     minWidth: 150,
@@ -237,9 +306,9 @@ const styles = StyleSheet.create({
     gap: spacing[6],
   },
   filterRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: spacing[3],
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   filterButton: {
     flex: 1,
@@ -250,7 +319,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing[12],
   },
   sectionTitle: {
-    fontSize: typography.fontSize['4xl'],
+    fontSize: typography.fontSize["4xl"],
     fontWeight: typography.fontWeight.bold,
     color: colors.neutral.textDark,
     marginBottom: spacing[2],
@@ -273,12 +342,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.neutral.lightGray,
     borderRadius: spacing[4],
     marginBottom: spacing[4],
-    position: 'relative',
-    justifyContent: 'center',
-    alignItems: 'center',
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
   },
   propertyBadge: {
-    position: 'absolute',
+    position: "absolute",
     top: spacing[3],
     left: spacing[3],
     backgroundColor: colors.primary.red,
@@ -290,13 +359,13 @@ const styles = StyleSheet.create({
     color: colors.neutral.white,
     fontSize: typography.fontSize.xs,
     fontWeight: typography.fontWeight.medium,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   propertyContent: {
     gap: spacing[2],
   },
   propertyPrice: {
-    fontSize: typography.fontSize['2xl'],
+    fontSize: typography.fontSize["2xl"],
     fontWeight: typography.fontWeight.bold,
     color: colors.primary.orange,
   },
@@ -310,23 +379,28 @@ const styles = StyleSheet.create({
     color: colors.neutral.textPrimary,
   },
   propertyFeatures: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: spacing[4],
     marginTop: spacing[2],
+  },
+  featureItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing[1],
   },
   featureText: {
     fontSize: typography.fontSize.sm,
     color: colors.neutral.textPrimary,
   },
   servicesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     gap: spacing[4],
   },
   serviceCard: {
     flex: 1,
     minWidth: (width - spacing[6] * 2 - spacing[4]) / 2,
-    alignItems: 'center',
+    alignItems: "center",
     padding: spacing[6],
   },
   serviceIcon: {
@@ -334,8 +408,8 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     backgroundColor: colors.background.pinkTwo,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: spacing[4],
   },
   serviceIconText: {
@@ -345,13 +419,13 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.lg,
     fontWeight: typography.fontWeight.semiBold,
     color: colors.neutral.textDark,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: spacing[2],
   },
   serviceDescription: {
     fontSize: typography.fontSize.sm,
     color: colors.neutral.textPrimary,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: typography.fontSize.sm * typography.lineHeight.relaxed,
   },
   ctaSection: {
@@ -360,20 +434,20 @@ const styles = StyleSheet.create({
   },
   ctaCard: {
     backgroundColor: colors.primary.blue,
-    alignItems: 'center',
+    alignItems: "center",
     padding: spacing[10],
   },
   ctaTitle: {
-    fontSize: typography.fontSize['3xl'],
+    fontSize: typography.fontSize["3xl"],
     fontWeight: typography.fontWeight.bold,
     color: colors.neutral.white,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: spacing[4],
   },
   ctaDescription: {
     fontSize: typography.fontSize.base,
     color: colors.neutral.white,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: spacing[8],
     opacity: 0.9,
     lineHeight: typography.fontSize.base * typography.lineHeight.relaxed,
